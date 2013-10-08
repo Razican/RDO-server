@@ -1,9 +1,12 @@
 package com.example.rdo_server;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 
+/**
+ * @author Razican (Iban Eguia)
+ */
 public class MainActivity extends Activity {
 
 	@Override
@@ -20,5 +23,4 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }
