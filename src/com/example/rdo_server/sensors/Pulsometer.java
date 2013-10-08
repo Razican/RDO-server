@@ -20,9 +20,28 @@ public class Pulsometer extends Sensor {
 	}
 
 	@Override
+	public void enable()
+	{
+		// TODO communicate with the real sensor
+		super.setState(ENABLED);
+	}
+
+	@Override
+	public void disable()
+	{
+		// TODO communicate with the real sensor
+		super.setState(DISABLED);
+	}
+
+	@Override
 	public double measure()
 	{
-		Random random = new Random(new Date().getTime());
-		return 50 + random.nextInt(100);
+		// TODO communicate with the real sensor
+		if (super.isInState(ENABLED))
+		{
+			Random random = new Random(new Date().getTime());
+			return 50 + random.nextInt(100);
+		}
+		return 0;
 	}
 }

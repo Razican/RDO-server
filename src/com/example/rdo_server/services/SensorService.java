@@ -25,11 +25,34 @@ public class SensorService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent)
 	{
-		// TODO Auto-generated method stub
-	}
+		String action = intent.getStringExtra("action");
+		int sensorInt = intent.getIntExtra("sensor", - 1);
+		Sensor sensor;
 
-	private void checkSensors()
-	{
-		// TODO Auto-generated method stub
+		if (action != null && sensorInt >= 0
+		&& (sensor = sensors.get(sensorInt)) != null)
+		{
+			if (action == "enable")
+			{
+				sensor.enable();
+			}
+			else if (action == "disable")
+			{
+				sensor.disable();
+			}
+			else if (action == "check")
+			{
+				int state = sensor.getState();
+
+				// TODO return data to receivers
+			}
+			else if (action == "measure")
+			{
+				double measurement = sensor.measure();
+
+				// TODO return data to receivers
+				// XXX Timers
+			}
+		}
 	}
 }
