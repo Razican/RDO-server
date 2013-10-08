@@ -19,11 +19,17 @@ public class Server {
 	 * @param port - The port for the server
 	 * @throws IOException - If there is an exception when creating the socket
 	 */
-	public Server(int port) throws IOException
+	public Server(int port)
 	{
-		server = new ServerSocket(port);
-
-		acceptNewClient();
+		try
+		{
+			server = new ServerSocket(port);
+			acceptNewClient();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private void acceptNewClient()
@@ -37,6 +43,7 @@ public class Server {
 				try
 				{
 					clients.add(new Client(server.accept()));
+					System.out.println("Cliente aceptado");
 				}
 				catch (IOException e)
 				{
@@ -76,5 +83,13 @@ public class Server {
 		}
 
 		server.close();
+	}
+
+	/**
+	 * @param args Application arguments
+	 */
+	public static void main(String[] args)
+	{
+		Server server = new Server(3000);
 	}
 }
