@@ -14,6 +14,7 @@ public class Client {
 	private Socket				socket;
 	private DataOutputStream	output;
 	private BufferedReader		input;
+	private String				user;
 
 	/**
 	 * Creates a new client
@@ -51,9 +52,16 @@ public class Client {
 	 * @param line - The line to write to the client
 	 * @throws IOException - If it was unable to send the message to the client
 	 */
-	public void write(String line) throws IOException
+	public void write(String line)
 	{
-		this.output.writeBytes(line);
+		try
+		{
+			this.output.writeBytes(line);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -67,5 +75,27 @@ public class Client {
 		this.output.close();
 		this.input.close();
 		this.socket.close();
+	}
+
+	/**
+	 * Sets the user for the client
+	 * 
+	 * @param user - The user for the client
+	 */
+	public void setUser(String user)
+	{
+		this.user = user;
+	}
+
+	/**
+	 * Checks the password of the user
+	 * 
+	 * @param password - The password of the user, SHA-1 encoded
+	 * @return If the password is correct
+	 */
+	public boolean checkPassword(String password)
+	{
+		return this.user.equals("admin")
+		&& password.equals("8cb2237d0679ca88db6464eac60da96345513964"); // pass:12345
 	}
 }

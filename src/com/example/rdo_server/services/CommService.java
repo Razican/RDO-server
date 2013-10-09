@@ -15,6 +15,8 @@ import com.example.rdo_server.utilities.Server;
 public class CommService extends IntentService {
 
 	private Server	server;
+	private boolean	gpsActive;
+	private boolean	photo;
 
 	/**
 	 * Creates a Communication Service
@@ -22,6 +24,7 @@ public class CommService extends IntentService {
 	public CommService()
 	{
 		super("CommService");
+		photo = false;
 	}
 
 	private void doCommand(String l, Client c)
@@ -30,11 +33,36 @@ public class CommService extends IntentService {
 
 		if (command.equals("USUARIO"))
 		{
-			// TODO
+			String user = CommandAnalizer.getParameter(l);
+			if (user != null)
+			{
+				c.setUser(user);
+				c.write("301 OK Bienvenido " + user + ".");
+			}
+			else
+			{
+				c.write("501 ERR Falta el nombre de usuario.");
+			}
 		}
 		else if (command.equals("CLAVE"))
 		{
-			// TODO
+			String password = CommandAnalizer.getParameter(l);
+
+			if (password != null)
+			{
+				if (c.checkPassword(password))
+				{
+					c.write("302 OK Bienvenido al sistema.");
+				}
+				else
+				{
+					c.write("502 ERR La clave es incorrecta.");
+				}
+			}
+			else
+			{
+				c.write("503 ERR Falta la clave.");
+			}
 		}
 		else if (command.equals("LISTSENSOR"))
 		{
@@ -54,11 +82,27 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("ONGPS"))
 		{
-			// TODO
+			if ( ! gpsActive)
+			{
+				gpsActive = true;
+				c.write("315 OK GPS activado.");
+			}
+			else
+			{
+				c.write("529 ERR GPS en estado ON.");
+			}
 		}
 		else if (command.equals("OFFGPS"))
 		{
-			// TODO
+			if (gpsActive)
+			{
+				gpsActive = false;
+				c.write("316 OK GPS desactivado.");
+			}
+			else
+			{
+				c.write("530 ERR GPS en estado OFF.");
+			}
 		}
 		else if (command.equals("GET_VALACT"))
 		{
@@ -66,11 +110,31 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("GET_FOTO"))
 		{
-			// TODO
+			if (gpsActive)
+			{
+				// TODO sacar foto y enviar
+				photo = true;
+			}
+			else
+			{
+				c.write("530 ERR GPS en estado OFF.");
+			}
 		}
 		else if (command.equals("GET_LOC"))
 		{
-			// TODO
+			if (photo)
+			{
+				// TODO
+			}
+			else
+			{
+				// TODO
+			}
+		}
+
+		if ( ! command.equals("GET_FOTO"))
+		{
+			photo = false;
 		}
 	}
 

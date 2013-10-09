@@ -13,6 +13,35 @@ public final class CommandAnalizer {
 	 */
 	public static String getCommand(String message)
 	{
-		return message.split(" ")[0];
+		String[] array = message.split(" ");
+
+		if (array.length >= 1)
+		{
+			return array[0];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the parameter of the command
+	 * 
+	 * @param message - The message received by the server
+	 * @return the parameter of the command
+	 */
+	public static String getParameter(String message)
+	{
+		String[] array = message.split(" ");
+
+		if (array.length == 2)
+		{
+			return array[1];
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

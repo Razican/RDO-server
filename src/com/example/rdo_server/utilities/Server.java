@@ -71,7 +71,9 @@ public class Server {
 						service.startService(intent);
 					}
 
-					// TODO mandar mensaje de salida y cerrar el cliente
+					c.write("318 OK Adiós.");
+					c.close();
+					clients.remove(c);
 				}
 				catch (IOException e)
 				{
