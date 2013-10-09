@@ -5,25 +5,43 @@ import java.net.ServerSocket;
 import java.util.Iterator;
 import java.util.Vector;
 
+import android.content.Intent;
+
+import com.example.rdo_server.services.CommService;
+
 /**
  * @author Razican (Iban Eguia)
  */
 public class Server {
 
 	private ServerSocket	server;
+	private CommService		service;
 	private Vector<Client>	clients;
 
 	/**
 	 * Creates an instance for the server.
 	 * 
 	 * @param port - The port for the server
+	 * @param service - The communication service launching the server
 	 * @throws IOException - If there is an exception when creating the socket
 	 */
-	public Server(int port) throws IOException
+	public Server(int port, CommService service) throws IOException
 	{
 		server = new ServerSocket(port);
+		this.service = service;
 
 		acceptNewClient();
+	}
+
+	/**
+	 * Get the client at a given index
+	 * 
+	 * @param index - The index of the client
+	 * @return The client at that index
+	 */
+	public Client getClient(int index)
+	{
+		return clients.get(index);
 	}
 
 	private void acceptNewClient()
@@ -36,7 +54,22 @@ public class Server {
 			{
 				try
 				{
-					clients.add(new Client(server.accept()));
+					Client c = new Client(server.accept());
+					clients.add(c);
+					int index = clients.indexOf(c);
+
+					String line = null;
+
+					while ( ! CommandTester.getCommand((line = c.read()))
+					.equals("SALIR"))
+					{
+						Intent intent = new Intent(service, CommService.class);
+						intent.putExtra("action", "command");
+						intent.putExtra("line", line);
+						intent.putExtra("client", index);
+
+						service.startService(intent);
+					}
 				}
 				catch (IOException e)
 				{

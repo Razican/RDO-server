@@ -32,21 +32,21 @@ public class SensorService extends IntentService {
 		if (action != null && sensorInt >= 0
 		&& (sensor = sensors.get(sensorInt)) != null)
 		{
-			if (action == "enable")
+			if (action.equals("enable"))
 			{
 				sensor.enable();
 			}
-			else if (action == "disable")
+			else if (action.equals("disable"))
 			{
 				sensor.disable();
 			}
-			else if (action == "check")
+			else if (action.equals("check"))
 			{
 				int state = sensor.getState();
 
 				// TODO return data to receivers
 			}
-			else if (action == "measure")
+			else if (action.equals("measure"))
 			{
 				double measurement = sensor.measure();
 
