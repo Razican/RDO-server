@@ -3,7 +3,7 @@ package com.example.rdo_server.utilities;
 /**
  * @author Razican (Iban Eguia)
  */
-public final class CommandTester {
+public final class CommandAnalizer {
 
 	/**
 	 * Get the command string of the message

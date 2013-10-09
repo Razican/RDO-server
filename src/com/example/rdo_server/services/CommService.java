@@ -6,6 +6,7 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.example.rdo_server.utilities.Client;
+import com.example.rdo_server.utilities.CommandAnalizer;
 import com.example.rdo_server.utilities.Server;
 
 /**
@@ -25,7 +26,52 @@ public class CommService extends IntentService {
 
 	private void doCommand(String l, Client c)
 	{
-		// TODO Auto-generated method stub
+		String command = CommandAnalizer.getCommand(l);
+
+		if (command.equals("USUARIO"))
+		{
+			// TODO
+		}
+		else if (command.equals("CLAVE"))
+		{
+			// TODO
+		}
+		else if (command.equals("LISTSENSOR"))
+		{
+			// TODO
+		}
+		else if (command.equals("HISTORICO"))
+		{
+			// TODO
+		}
+		else if (command.equals("ON"))
+		{
+			// TODO
+		}
+		else if (command.equals("OFF"))
+		{
+			// TODO
+		}
+		else if (command.equals("ONGPS"))
+		{
+			// TODO
+		}
+		else if (command.equals("OFFGPS"))
+		{
+			// TODO
+		}
+		else if (command.equals("GET_VALACT"))
+		{
+			// TODO
+		}
+		else if (command.equals("GET_FOTO"))
+		{
+			// TODO
+		}
+		else if (command.equals("GET_LOC"))
+		{
+			// TODO
+		}
 	}
 
 	@Override

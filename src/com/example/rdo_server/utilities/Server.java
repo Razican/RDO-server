@@ -60,7 +60,7 @@ public class Server {
 
 					String line = null;
 
-					while ( ! CommandTester.getCommand((line = c.read()))
+					while ( ! CommandAnalizer.getCommand((line = c.read()))
 					.equals("SALIR"))
 					{
 						Intent intent = new Intent(service, CommService.class);
@@ -70,6 +70,8 @@ public class Server {
 
 						service.startService(intent);
 					}
+
+					// TODO mandar mensaje de salida y cerrar el cliente
 				}
 				catch (IOException e)
 				{
@@ -100,7 +102,9 @@ public class Server {
 		{
 			try
 			{
-				i.next().close();
+				Client c = i.next();
+				c.close();
+				clients.remove(c);
 			}
 			catch (IOException e)
 			{
