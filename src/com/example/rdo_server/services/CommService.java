@@ -1,10 +1,14 @@
 package com.example.rdo_server.services;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 
@@ -17,9 +21,8 @@ import com.example.rdo_server.utilities.Server;
  */
 public class CommService extends IntentService {
 
-	private Server	server;
-	private boolean	gpsActive;
-	private boolean	photo;
+	private static Server	server;
+	private static boolean	gpsActive;
 
 	/**
 	 * Creates a Communication Service
@@ -27,9 +30,6 @@ public class CommService extends IntentService {
 	public CommService()
 	{
 		super("CommService");
-		photo = false;
-		gpsActive = false;
-		// TODO detect GPS
 	}
 
 	private void doCommand(String l, Client c)
@@ -71,19 +71,59 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("LISTSENSOR"))
 		{
-			// TODO
+			// TODO get the list of sensors
 		}
 		else if (command.equals("HISTORICO"))
 		{
-			// TODO
+			// TODO get historic data
 		}
 		else if (command.equals("ON"))
 		{
-			// TODO
+			String i = CommandAnalizer.getParameter(l);
+			int index = - 1;
+
+			if (i != null
+			&& (index = Integer.parseInt(i) - 1) < SensorService.listSensors()
+			.size() && index >= 0)
+			{
+				if (SensorService.isEnabled(index))
+				{
+					c.write("528 ERR Sensor en estado ON.");
+				}
+				else
+				{
+					SensorService.enable(index);
+					c.write("313 OK Sensor activo.");
+				}
+			}
+			else
+			{
+				c.write("527 ERR Sensor no existe.");
+			}
 		}
 		else if (command.equals("OFF"))
 		{
-			// TODO
+			String i = CommandAnalizer.getParameter(l);
+			int index = - 1;
+
+			if (i != null
+			&& (index = Integer.parseInt(i) - 1) < SensorService.listSensors()
+			.size() && index >= 0)
+			{
+				if ( ! SensorService.isEnabled(index))
+				{
+					c.write("314 OK Sensor desactivado.");
+				}
+				else
+				{
+					SensorService.disable(index);
+					c.write("313 OK Sensor activo.");
+				}
+			}
+			else
+			{
+				c.write("527 ERR Sensor no existe.");
+			}
 		}
 		else if (command.equals("ONGPS"))
 		{
@@ -111,7 +151,39 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("GET_VALACT"))
 		{
-			// TODO
+			String i = CommandAnalizer.getParameter(l);
+			int index = - 1;
+
+			if (i != null
+			&& (index = Integer.parseInt(i) - 1) < SensorService.listSensors()
+			.size() && index >= 0)
+			{
+				if (SensorService.isEnabled(index))
+				{
+					// 224 OK 22/10/09;11:23:12; 4°41'24.14"-74°02'46.86;24
+					String response = "224 OK ";
+					SimpleDateFormat df = new SimpleDateFormat(
+					"dd/mm/yy;hh:mm:ss", Locale.getDefault());
+					response += df.format(new Date());
+					response += ";;"; // TODO coordenadas
+					response += SensorService.measure(index);
+
+					c.write(response);
+					// XXX Y si no hay coordenadas?
+				}
+				else
+				{
+					c.write("526 ERR Sensor en OFF.");
+				}
+			}
+			else if (i == null)
+			{
+				c.write("525 ERR Falta parámetro id_sensor.");
+			}
+			else
+			{
+				c.write("524 ERR Sensor desconocido.");
+			}
 		}
 		else if (command.equals("GET_FOTO"))
 		{
@@ -120,7 +192,7 @@ public class CommService extends IntentService {
 			&& locMan.isProviderEnabled(LocationManager.GPS_PROVIDER))
 			{
 				// TODO sacar foto y enviar
-				photo = true;
+				c.setPhoto(true);
 			}
 			else
 			{
@@ -129,25 +201,32 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("GET_LOC"))
 		{
-			LocationManager locMan;
-			if (photo
-			&& gpsActive
-			&& (locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE))
-			.isProviderEnabled(LocationManager.GPS_PROVIDER))
+			LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			if (c.gotPhoto())
 			{
-				Location loc = locMan
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				// TODO
+				Criteria locC = new Criteria();
+				locC.setAccuracy(Criteria.ACCURACY_FINE);
+
+				Location loc = locMan.getLastKnownLocation(locMan
+				.getBestProvider(locC, true));
+
+				String response = "124 OK ";
+				response += Location.convert(loc.getLatitude(),
+				Location.FORMAT_SECONDS);
+				response += Location.convert(loc.getLongitude(),
+				Location.FORMAT_SECONDS);
+
+				c.write(response);
 			}
 			else
 			{
-				// TODO Qué hacer en este caso?
+				// XXX Y qué pasa aquí?
 			}
 		}
 
 		if ( ! command.equals("GET_FOTO"))
 		{
-			photo = false;
+			c.setPhoto(false);
 		}
 	}
 
@@ -165,6 +244,8 @@ public class CommService extends IntentService {
 				try
 				{
 					server = new Server(port, this);
+					gpsActive = ((LocationManager) getSystemService(Context.LOCATION_SERVICE))
+					.isProviderEnabled(LocationManager.GPS_PROVIDER);
 				}
 				catch (IOException e)
 				{

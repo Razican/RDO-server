@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.UUID;
+
+import android.util.Log;
 
 /**
  * @author Razican (Iban Eguia)
@@ -15,6 +18,8 @@ public class Client {
 	private DataOutputStream	output;
 	private BufferedReader		input;
 	private String				user;
+	private boolean				photo;
+	private String				id;
 
 	/**
 	 * Creates a new client
@@ -28,6 +33,8 @@ public class Client {
 		this.output = new DataOutputStream(socket.getOutputStream());
 		this.input = new BufferedReader(new InputStreamReader(
 		socket.getInputStream()));
+		this.photo = false;
+		this.id = UUID.randomUUID().toString();
 	}
 
 	/**
@@ -39,12 +46,17 @@ public class Client {
 	{
 		try
 		{
-			return this.input.readLine();
+			String l = input.readLine();
+			if (l != null)
+			{
+				Log.d("Command", l);
+			}
+			return l;
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			return "";
+			return null;
 		}
 	}
 
@@ -56,7 +68,8 @@ public class Client {
 	{
 		try
 		{
-			this.output.writeBytes(line);
+			output.writeBytes(line + "\n");
+			Log.d("Response", line);
 		}
 		catch (IOException e)
 		{
@@ -88,6 +101,24 @@ public class Client {
 	}
 
 	/**
+	 * Sets the user for the client
+	 * 
+	 * @param photo - If the photo has been sent
+	 */
+	public void setPhoto(boolean photo)
+	{
+		this.photo = photo;
+	}
+
+	/**
+	 * @return If the user has got a photo, for sending location
+	 */
+	public boolean gotPhoto()
+	{
+		return photo;
+	}
+
+	/**
 	 * Checks the password of the user
 	 * 
 	 * @param password - The password of the user, SHA-1 encoded
@@ -95,7 +126,21 @@ public class Client {
 	 */
 	public boolean checkPassword(String password)
 	{
-		return this.user.equals("admin")
+		return user.equals("admin")
 		&& password.equals("8cb2237d0679ca88db6464eac60da96345513964"); // pass:12345
+	}
+
+	@Override
+	public String toString()
+	{
+		String c = "";
+		if (user != null)
+		{
+			c += user + " @ ";
+		}
+		c += socket.getInetAddress().getHostAddress();
+		c += " - ID: " + id.substring(0, 7);
+
+		return c;
 	}
 }

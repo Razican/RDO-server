@@ -2,58 +2,96 @@ package com.example.rdo_server.services;
 
 import java.util.Vector;
 
-import android.app.IntentService;
-import android.content.Intent;
-
+import com.example.rdo_server.sensors.Measurement;
+import com.example.rdo_server.sensors.Pulsometer;
 import com.example.rdo_server.sensors.Sensor;
 
 /**
  * @author Razican (Iban Eguia)
  */
-public class SensorService extends IntentService {
+public class SensorService {
 
-	private Vector<Sensor>	sensors;
+	private static SensorService	instance	= new SensorService();
+	private Vector<Sensor>			sensors;
 
 	/**
 	 * Creates a SensorService
 	 */
-	public SensorService()
+	private SensorService()
 	{
-		super("SensorService");
+		sensors = new Vector<Sensor>();
+		Sensor pulsometer = new Pulsometer("Pulsómetro",
+		"Medidor de frecuencia cardíaca", "ppm", true);
+
+		sensors.add(pulsometer);
 		// TODO init sensors
 	}
 
-	@Override
-	protected void onHandleIntent(Intent intent)
+	private Sensor getSensor(int sensor)
 	{
-		String action = intent.getStringExtra("action");
-		int sensorInt = intent.getIntExtra("sensor", - 1);
-		Sensor sensor;
+		return sensors.get(sensor);
+	}
 
-		if (action != null && sensorInt >= 0
-		&& (sensor = sensors.get(sensorInt)) != null)
-		{
-			if (action.equals("enable"))
-			{
-				sensor.enable();
-			}
-			else if (action.equals("disable"))
-			{
-				sensor.disable();
-			}
-			else if (action.equals("check"))
-			{
-				int state = sensor.getState();
+	/**
+	 * Disables a sensor
+	 * 
+	 * @param sensor - The sensor to disable
+	 */
+	public synchronized static void disable(int sensor)
+	{
+		instance.getSensor(sensor).disable();
+	}
 
-				// TODO return data to receivers
-			}
-			else if (action.equals("measure"))
-			{
-				double measurement = sensor.measure();
+	/**
+	 * Enables a sensor
+	 * 
+	 * @param sensor - The sensor to enable
+	 */
+	public synchronized static void enable(int sensor)
+	{
+		instance.getSensor(sensor).enable();
+	}
 
-				// TODO return data to receivers
-				// XXX Timers
-			}
-		}
+	/**
+	 * Check if the sensor is enabled
+	 * 
+	 * @param sensor - the sensor to check
+	 * @return If it is enabled
+	 */
+	public synchronized static boolean isEnabled(int sensor)
+	{
+		return instance.getSensor(sensor).isInState(Sensor.ENABLED);
+	}
+
+	/**
+	 * Measures a sensor
+	 * 
+	 * @param sensor - The sensor to measure
+	 * @return The measurement of the sensor
+	 */
+	public synchronized static int measure(int sensor)
+	{
+		return instance.getSensor(sensor).measure();
+	}
+
+	/**
+	 * Checks a sensor
+	 * 
+	 * @param sensor - The sensor to check
+	 * @return The state of the sensor
+	 */
+	public synchronized static Vector<Measurement> getHistoric(int sensor)
+	{
+		return instance.getSensor(sensor).getHistoric();
+	}
+
+	/**
+	 * Gets the list of sensors
+	 * 
+	 * @return The vector containing the sensors
+	 */
+	public static synchronized Vector<Sensor> listSensors()
+	{
+		return instance.sensors;
 	}
 }

@@ -17,11 +17,18 @@ public final class CommandAnalizer {
 	 */
 	public static String getCommand(String message)
 	{
-		String[] array = message.split(" ");
-
-		if (array.length >= 1)
+		if (message != null)
 		{
-			return array[0];
+			String[] array = message.split(" ");
+
+			if (array.length >= 1)
+			{
+				return array[0];
+			}
+			else
+			{
+				return null;
+			}
 		}
 		else
 		{

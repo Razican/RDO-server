@@ -11,7 +11,6 @@ import org.apache.http.conn.util.InetAddressUtils;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 
 import com.example.rdo_server.services.CommService;
@@ -29,7 +28,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		startService(new Intent(this, SensorService.class));
-		Log.d("IP", getIP());
+		// Log.d("IP", getIP());
 
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");
