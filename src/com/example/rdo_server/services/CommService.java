@@ -3,7 +3,10 @@ package com.example.rdo_server.services;
 import java.io.IOException;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 
 import com.example.rdo_server.utilities.Client;
 import com.example.rdo_server.utilities.CommandAnalizer;
@@ -25,6 +28,8 @@ public class CommService extends IntentService {
 	{
 		super("CommService");
 		photo = false;
+		gpsActive = false;
+		// TODO detect GPS
 	}
 
 	private void doCommand(String l, Client c)
@@ -110,7 +115,9 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("GET_FOTO"))
 		{
-			if (gpsActive)
+			LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			if (gpsActive
+			&& locMan.isProviderEnabled(LocationManager.GPS_PROVIDER))
 			{
 				// TODO sacar foto y enviar
 				photo = true;
@@ -122,13 +129,19 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("GET_LOC"))
 		{
-			if (photo)
+			LocationManager locMan;
+			if (photo
+			&& gpsActive
+			&& (locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE))
+			.isProviderEnabled(LocationManager.GPS_PROVIDER))
 			{
+				Location loc = locMan
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 				// TODO
 			}
 			else
 			{
-				// TODO
+				// TODO Qué hacer en este caso?
 			}
 		}
 
@@ -143,7 +156,7 @@ public class CommService extends IntentService {
 	{
 		String action = intent.getStringExtra("action");
 
-		if (action.equals("init"))
+		if (action != null && action.equals("init"))
 		{
 			int port = intent.getIntExtra("port", 0);
 
@@ -159,7 +172,7 @@ public class CommService extends IntentService {
 				}
 			}
 		}
-		else if (action.equals("command"))
+		else if (action != null && action.equals("command"))
 		{
 			int index = intent.getIntExtra("client", - 1);
 			if (index >= 0)

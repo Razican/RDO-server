@@ -20,6 +20,7 @@ public class SensorService extends IntentService {
 	public SensorService()
 	{
 		super("SensorService");
+		// TODO init sensors
 	}
 
 	@Override

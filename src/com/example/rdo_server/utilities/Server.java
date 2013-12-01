@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.rdo_server.services.CommService;
 
@@ -46,6 +47,7 @@ public class Server {
 
 	private void acceptNewClient()
 	{
+		Log.d("Server", "Waiting for a new client");
 		(new Thread()
 		{
 
@@ -56,8 +58,11 @@ public class Server {
 				{
 					Client c = new Client(server.accept());
 					clients.add(c);
-					int index = clients.indexOf(c);
+					Log.d("Server", "Client accepted");
 
+					acceptNewClient();
+
+					int index = clients.indexOf(c);
 					String line = null;
 
 					while ( ! CommandAnalizer.getCommand((line = c.read()))

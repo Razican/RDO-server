@@ -5,8 +5,10 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -15,11 +17,11 @@
         android:theme="@style/AppTheme" >
         
         <service 
-            android:name=".SensorService"
+            android:name=".services.SensorService"
             android:exported="false" />
         
         <service 
-            android:name=".CommService"
+            android:name=".services.CommService"
             android:exported="false" />
         
         <activity
@@ -27,7 +29,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

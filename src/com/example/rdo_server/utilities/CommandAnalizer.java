@@ -5,6 +5,10 @@ package com.example.rdo_server.utilities;
  */
 public final class CommandAnalizer {
 
+	private CommandAnalizer()
+	{
+	}
+
 	/**
 	 * Get the command string of the message
 	 * 
