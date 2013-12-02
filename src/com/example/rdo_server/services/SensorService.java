@@ -20,11 +20,10 @@ public class SensorService {
 	private SensorService()
 	{
 		sensors = new Vector<Sensor>();
-		Sensor pulsometer = new Pulsometer("Pulsómetro",
-		"Medidor de frecuencia cardíaca", "ppm", true);
-
+		Sensor pulsometer = new Pulsometer(1, "Pulsómetro", true);
 		sensors.add(pulsometer);
-		// TODO init sensors
+
+		// TODO init sensors from DB
 	}
 
 	private Sensor getSensor(int sensor)
@@ -60,7 +59,7 @@ public class SensorService {
 	 */
 	public synchronized static boolean isEnabled(int sensor)
 	{
-		return instance.getSensor(sensor).isInState(Sensor.ENABLED);
+		return instance.getSensor(sensor).isEnabled();
 	}
 
 	/**

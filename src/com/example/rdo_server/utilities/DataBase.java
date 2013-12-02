@@ -5,4 +5,10 @@ package com.example.rdo_server.utilities;
  */
 public class DataBase {
 
+	private static DataBase	instance	= new DataBase();
+
+	private DataBase()
+	{
+		// TODO
+	}
 }

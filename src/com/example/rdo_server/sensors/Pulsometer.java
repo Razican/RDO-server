@@ -9,37 +9,20 @@ import java.util.Random;
 public class Pulsometer extends Sensor {
 
 	/**
-	 * @param name - The name for the sensor
+	 * @param id - The ID of the sensor
 	 * @param description - The description of the sensor
-	 * @param units - The units for the sensor
 	 * @param enabled - If the sensor should be enabled
 	 */
-	public Pulsometer(String name, String description, String units,
-	boolean enabled)
+	public Pulsometer(int id, String description, boolean enabled)
 	{
-		super(name, description, units, enabled);
+		super(id, description, enabled);
 		// TODO Load historic
-	}
-
-	@Override
-	public void enable()
-	{
-		// TODO communicate with the real sensor
-		super.setState(ENABLED);
-	}
-
-	@Override
-	public void disable()
-	{
-		// TODO communicate with the real sensor
-		super.setState(DISABLED);
 	}
 
 	@Override
 	public synchronized int measure()
 	{
-		// TODO communicate with the real sensor
-		if (super.isInState(ENABLED))
+		if (super.isEnabled())
 		{
 			Random random = new Random(new Date().getTime());
 			try

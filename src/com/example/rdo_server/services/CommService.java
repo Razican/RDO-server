@@ -8,10 +8,11 @@ import java.util.Locale;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.example.rdo_server.sensors.Measurement;
+import com.example.rdo_server.sensors.Sensor;
 import com.example.rdo_server.utilities.Client;
 import com.example.rdo_server.utilities.CommandAnalizer;
 import com.example.rdo_server.utilities.Server;
@@ -71,11 +72,59 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("LISTSENSOR"))
 		{
-			// TODO get the list of sensors
+			c.write("222 OK Lista de sensores.");
+
+			for (Sensor s: SensorService.listSensors())
+			{
+				String response = String.format(Locale.getDefault(), "%02d",
+				s.getId());
+				response += ";" + s.getDescription() + ";";
+				response += s.isEnabled() ? "ON" : "OFF";
+				c.write(response);
+			}
+
+			c.write("322 OK Lista finalizada.");
 		}
 		else if (command.equals("HISTORICO"))
 		{
-			// TODO get historic data
+			String i = CommandAnalizer.getParameter(l);
+			int index = - 1;
+
+			if (i != null
+			&& (index = Integer.parseInt(i) - 1) < SensorService.listSensors()
+			.size() && index >= 0)
+			{
+				c.write("223 OK Lista de medidas.");
+
+				for (Measurement m: SensorService.getHistoric(index))
+				{
+					SimpleDateFormat df = new SimpleDateFormat(
+					"dd/mm/yy;hh:mm:ss", Locale.getDefault());
+
+					String response = df.format(m.getDate()) + ";";
+
+					Location loc = m.getLocation();
+
+					response += Location.convert(loc.getLatitude(),
+					Location.FORMAT_SECONDS);
+					response += Location.convert(loc.getLongitude(),
+					Location.FORMAT_SECONDS);
+
+					response += ";" + m.getValue();
+
+					c.write(response);
+				}
+
+				c.write("322 OK Lista finalizada.");
+			}
+			else if (i != null)
+			{
+				c.write("524 ERR Sensor desconocido.");
+			}
+			else
+			{
+				c.write("525 ERR Falta parámetro id_sensor.");
+			}
 		}
 		else if (command.equals("ON"))
 		{
@@ -160,16 +209,22 @@ public class CommService extends IntentService {
 			{
 				if (SensorService.isEnabled(index))
 				{
-					// 224 OK 22/10/09;11:23:12; 4°41'24.14"-74°02'46.86;24
 					String response = "224 OK ";
 					SimpleDateFormat df = new SimpleDateFormat(
 					"dd/mm/yy;hh:mm:ss", Locale.getDefault());
-					response += df.format(new Date());
-					response += ";;"; // TODO coordenadas
-					response += SensorService.measure(index);
+					response += df.format(new Date()) + ";";
+
+					Location loc = LocationService.getLocation(this);
+
+					response += Location.convert(loc.getLatitude(),
+					Location.FORMAT_SECONDS);
+					response += Location.convert(loc.getLongitude(),
+					Location.FORMAT_SECONDS);
+
+					response += ";" + SensorService.measure(index);
 
 					c.write(response);
-					// XXX Y si no hay coordenadas?
+					// TODO save measurement
 				}
 				else
 				{
@@ -187,9 +242,7 @@ public class CommService extends IntentService {
 		}
 		else if (command.equals("GET_FOTO"))
 		{
-			LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			if (gpsActive
-			&& locMan.isProviderEnabled(LocationManager.GPS_PROVIDER))
+			if (gpsActive)
 			{
 				// TODO sacar foto y enviar
 				c.setPhoto(true);
@@ -199,29 +252,17 @@ public class CommService extends IntentService {
 				c.write("530 ERR GPS en estado OFF.");
 			}
 		}
-		else if (command.equals("GET_LOC"))
+		else if (command.equals("GET_LOC") && c.gotPhoto())
 		{
-			LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			if (c.gotPhoto())
-			{
-				Criteria locC = new Criteria();
-				locC.setAccuracy(Criteria.ACCURACY_FINE);
+			Location loc = LocationService.getLocation(this);
 
-				Location loc = locMan.getLastKnownLocation(locMan
-				.getBestProvider(locC, true));
+			String response = "124 OK ";
+			response += Location.convert(loc.getLatitude(),
+			Location.FORMAT_SECONDS);
+			response += Location.convert(loc.getLongitude(),
+			Location.FORMAT_SECONDS);
 
-				String response = "124 OK ";
-				response += Location.convert(loc.getLatitude(),
-				Location.FORMAT_SECONDS);
-				response += Location.convert(loc.getLongitude(),
-				Location.FORMAT_SECONDS);
-
-				c.write(response);
-			}
-			else
-			{
-				// XXX Y qué pasa aquí?
-			}
+			c.write(response);
 		}
 
 		if ( ! command.equals("GET_FOTO"))
