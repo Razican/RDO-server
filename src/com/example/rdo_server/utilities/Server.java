@@ -71,7 +71,8 @@ public class Server {
 					int index = clients.indexOf(c);
 
 					while ((line = c.read()) != null
-					&& ! CommandAnalizer.getCommand(line).equals("SALIR"))
+					&& ! CommandAnalizer.getCommand(line).equals("SALIR")
+					&& c.isOpen())
 					{
 						Intent intent = new Intent(service, CommService.class);
 						intent.putExtra("action", "command");
@@ -97,14 +98,6 @@ public class Server {
 				}
 			}
 		}).start();
-	}
-
-	/**
-	 * @return The iterator for the clients
-	 */
-	public Iterator<Client> getClientIterator()
-	{
-		return clients.iterator();
 	}
 
 	/**

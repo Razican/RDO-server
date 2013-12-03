@@ -20,6 +20,7 @@ public class Client {
 	private String				user;
 	private boolean				photo;
 	private String				id;
+	private boolean				open;
 
 	/**
 	 * Creates a new client
@@ -35,6 +36,7 @@ public class Client {
 		socket.getInputStream()));
 		this.photo = false;
 		this.id = UUID.randomUUID().toString();
+		this.open = true;
 	}
 
 	/**
@@ -116,6 +118,16 @@ public class Client {
 		this.output.close();
 		this.input.close();
 		this.socket.close();
+
+		this.open = false;
+	}
+
+	/**
+	 * @return If the connection is open
+	 */
+	public boolean isOpen()
+	{
+		return open;
 	}
 
 	/**
@@ -154,7 +166,7 @@ public class Client {
 	 */
 	public boolean checkPassword(String password)
 	{
-		return user.equals("admin")
+		return user != null && user.equals("admin")
 		&& password.equals("8cb2237d0679ca88db6464eac60da96345513964"); // pass:12345
 	}
 
