@@ -78,6 +78,31 @@ public class Client {
 	}
 
 	/**
+	 * Sends the photo to the client
+	 * 
+	 * @param byteArray - The byte array to send
+	 */
+	public void sendPhoto(byte[] byteArray)
+	{
+		write("PHOTOLEN " + (byteArray != null ? byteArray.length : 0));
+		if (byteArray != null)
+		{
+			try
+			{
+				Log.d("PHOTO", "Sending photo of length " + byteArray.length
+				+ " to client " + this);
+				socket.getOutputStream().write(byteArray);
+				socket.getOutputStream().flush();
+				Log.d("PHOTO", "Photo sent");
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
 	 * Closes the connection with the client
 	 * 
 	 * @throws IOException - If there is an exception when closing the

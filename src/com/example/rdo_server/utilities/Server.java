@@ -63,7 +63,7 @@ public class Server {
 					clients.add(c);
 
 					Log.d("Server", "Client " + c + " accepted");
-					Log.d("Server", clients.size() + " clients in server");
+					Log.d("Server", clients.size() + " client(s) in server");
 
 					acceptNewClient();
 

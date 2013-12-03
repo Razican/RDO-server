@@ -9,8 +9,13 @@ import java.util.List;
 import org.apache.http.conn.util.InetAddressUtils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 
 import com.example.rdo_server.services.CommService;
@@ -22,6 +27,12 @@ import com.example.rdo_server.utilities.Database;
  */
 public class MainActivity extends Activity {
 
+	/**
+	 * The action for the receiver
+	 */
+	public static final String	ACTION	= "TAKEPHOTO";
+	private PhotoReceiver		receiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -32,6 +43,10 @@ public class MainActivity extends Activity {
 		// Log.d("IP", getIP());
 
 		Database.init(this);
+
+		IntentFilter filter = new IntentFilter(ACTION);
+		filter.addCategory(Intent.CATEGORY_DEFAULT);
+		registerReceiver(receiver = new PhotoReceiver(), filter);
 
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");
@@ -78,5 +93,51 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	// @Override
+	// protected void onStop()
+	// {
+	// unregisterReceiver(receiver);
+	// super.onStop();
+	// }
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_OK)
+		{
+			Intent comIntent = new Intent(this, CommService.class);
+			comIntent.putExtra("action", "photo");
+			comIntent.putExtra("client", requestCode - 1);
+			comIntent.putExtra("photo", true);
+			comIntent.putExtra("data", (Bitmap) data.getExtras().get("data"));
+			startService(comIntent);
+		}
+		else
+		{
+			Intent comIntent = new Intent(this, CommService.class);
+			comIntent.putExtra("action", "photo");
+			comIntent.putExtra("client", requestCode - 1);
+			comIntent.putExtra("photo", false);
+			startService(comIntent);
+		}
+	}
+
+	private class PhotoReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			Intent act = new Intent(context, MainActivity.class);
+			act.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+			| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			startActivity(act);
+
+			Intent takePictureIntent = new Intent(
+			MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(takePictureIntent,
+			intent.getIntExtra("client", - 1) + 1);
+		}
 	}
 }

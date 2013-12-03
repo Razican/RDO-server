@@ -1,5 +1,6 @@
 package com.example.rdo_server.services;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,9 +9,11 @@ import java.util.Locale;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.example.rdo_server.MainActivity;
 import com.example.rdo_server.sensors.Measurement;
 import com.example.rdo_server.sensors.Sensor;
 import com.example.rdo_server.utilities.Client;
@@ -33,9 +36,10 @@ public class CommService extends IntentService {
 		super("CommService");
 	}
 
-	private void doCommand(String l, Client c)
+	private void doCommand(String l, int cIndex)
 	{
 		String command = CommandAnalizer.getCommand(l);
+		Client c = server.getClient(cIndex);
 
 		if (command.equals("USUARIO"))
 		{
@@ -248,8 +252,11 @@ public class CommService extends IntentService {
 		{
 			if (gpsActive)
 			{
-				// TODO sacar foto y enviar
-				c.setPhoto(true);
+				Intent broadcastIntent = new Intent();
+				broadcastIntent.setAction(MainActivity.ACTION);
+				broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+				broadcastIntent.putExtra("client", cIndex);
+				sendBroadcast(broadcastIntent);
 			}
 			else
 			{
@@ -290,7 +297,7 @@ public class CommService extends IntentService {
 				{
 					server = new Server(port, this);
 					gpsActive = ((LocationManager) getSystemService(Context.LOCATION_SERVICE))
-					.isProviderEnabled(LocationManager.GPS_PROVIDER);
+					.isProviderEnabled(LocationManager.GPS_PROVIDER) || true;
 				}
 				catch (IOException e)
 				{
@@ -303,10 +310,32 @@ public class CommService extends IntentService {
 			int index = intent.getIntExtra("client", - 1);
 			if (index >= 0)
 			{
-				Client c = server.getClient(index);
 				String l = intent.getStringExtra("line");
 
-				doCommand(l, c);
+				doCommand(l, index);
+			}
+		}
+		else if (action != null && action.equals("photo"))
+		{
+			int index = intent.getIntExtra("client", - 1);
+			boolean photo = intent.getBooleanExtra("photo", false);
+			if (index >= 0 && photo)
+			{
+				Client c = server.getClient(index);
+				c.setPhoto(true);
+
+				Bitmap bmp = (Bitmap) intent.getExtras().get("data");
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				byte[] byteArray = stream.toByteArray();
+
+				c.sendPhoto(byteArray);
+			}
+			else if (index >= 0)
+			{
+				Client c = server.getClient(index);
+				c.setPhoto(false);
+				c.sendPhoto(null);
 			}
 		}
 	}
