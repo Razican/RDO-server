@@ -94,6 +94,9 @@ public class Client {
 				socket.getOutputStream().write(byteArray);
 				socket.getOutputStream().flush();
 				Log.d("PHOTO", "Photo sent");
+
+				Log.d("PHOTO", "Last bytes: " + byteArray[byteArray.length - 2]
+				+ " " + byteArray[byteArray.length - 2]);
 			}
 			catch (IOException e)
 			{

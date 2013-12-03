@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 
 import com.example.rdo_server.services.CommService;
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		startService(new Intent(this, SensorService.class));
-		// Log.d("IP", getIP());
+		Log.d("IP", getIP());
 
 		Database.init(this);
 

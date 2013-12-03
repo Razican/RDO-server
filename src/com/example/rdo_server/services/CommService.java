@@ -327,6 +327,7 @@ public class CommService extends IntentService {
 				Bitmap bmp = (Bitmap) intent.getExtras().get("data");
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();
 				bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				stream.write( - 1);
 				byte[] byteArray = stream.toByteArray();
 
 				c.sendPhoto(byteArray);
