@@ -99,14 +99,14 @@ public class CommService extends IntentService {
 				for (Measurement m: SensorService.getHistoric(index))
 				{
 					SimpleDateFormat df = new SimpleDateFormat(
-					"dd/mm/yy;hh:mm:ss", Locale.getDefault());
+					"dd/MM/yy;HH:mm:ss", Locale.getDefault());
 
 					String response = df.format(m.getDate()) + ";";
 
 					Location loc = m.getLocation();
 
 					response += Location.convert(loc.getLatitude(),
-					Location.FORMAT_SECONDS);
+					Location.FORMAT_SECONDS) + ";";
 					response += Location.convert(loc.getLongitude(),
 					Location.FORMAT_SECONDS);
 
@@ -123,7 +123,7 @@ public class CommService extends IntentService {
 			}
 			else
 			{
-				c.write("525 ERR Falta parámetro id_sensor.");
+				c.write("525 ERR Falta parametro id_sensor.");
 			}
 		}
 		else if (command.equals("ON"))
@@ -209,22 +209,26 @@ public class CommService extends IntentService {
 			{
 				if (SensorService.isEnabled(index))
 				{
+					double m = SensorService.measure(index);
+					Location loc = LocationService.getLocation(this);
+					Date d = new Date();
+
 					String response = "224 OK ";
 					SimpleDateFormat df = new SimpleDateFormat(
-					"dd/mm/yy;hh:mm:ss", Locale.getDefault());
-					response += df.format(new Date()) + ";";
-
-					Location loc = LocationService.getLocation(this);
+					"dd/MM/yy;HH:mm:ss", Locale.getDefault());
+					response += df.format(d) + ";";
 
 					response += Location.convert(loc.getLatitude(),
-					Location.FORMAT_SECONDS);
+					Location.FORMAT_SECONDS) + ";";
 					response += Location.convert(loc.getLongitude(),
 					Location.FORMAT_SECONDS);
 
-					response += ";" + SensorService.measure(index);
+					response += ";" + m;
 
 					c.write(response);
-					// TODO save measurement
+
+					SensorService.saveMeasurement(index, new Measurement(d,
+					loc, m));
 				}
 				else
 				{
@@ -233,7 +237,7 @@ public class CommService extends IntentService {
 			}
 			else if (i == null)
 			{
-				c.write("525 ERR Falta parámetro id_sensor.");
+				c.write("525 ERR Falta parametro id_sensor.");
 			}
 			else
 			{
@@ -258,7 +262,7 @@ public class CommService extends IntentService {
 
 			String response = "124 OK ";
 			response += Location.convert(loc.getLatitude(),
-			Location.FORMAT_SECONDS);
+			Location.FORMAT_SECONDS) + ";";
 			response += Location.convert(loc.getLongitude(),
 			Location.FORMAT_SECONDS);
 

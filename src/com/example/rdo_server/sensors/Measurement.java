@@ -11,18 +11,18 @@ public class Measurement {
 
 	private Date		date;
 	private Location	location;
-	private int			value;
+	private double		value;
 
 	/**
 	 * @param date - The date of the measurement
 	 * @param location - The location of the measurement
-	 * @param value - The value of the measurement
+	 * @param m - The value of the measurement
 	 */
-	public Measurement(Date date, Location location, int value)
+	public Measurement(Date date, Location location, double m)
 	{
 		this.date = date;
 		this.location = location;
-		this.value = value;
+		this.value = m;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class Measurement {
 	/**
 	 * @return The value of the measurement
 	 */
-	public int getValue()
+	public double getValue()
 	{
 		return value;
 	}

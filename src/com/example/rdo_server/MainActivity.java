@@ -15,6 +15,7 @@ import android.view.Menu;
 
 import com.example.rdo_server.services.CommService;
 import com.example.rdo_server.services.SensorService;
+import com.example.rdo_server.utilities.Database;
 
 /**
  * @author Razican (Iban Eguia)
@@ -29,6 +30,8 @@ public class MainActivity extends Activity {
 
 		startService(new Intent(this, SensorService.class));
 		// Log.d("IP", getIP());
+
+		Database.init(this);
 
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");

@@ -7,7 +7,7 @@ import java.util.Vector;
 /**
  * @author Razican (Iban Eguia)
  */
-public class Pulsometer extends Sensor {
+public class GlucoseMeter extends Sensor {
 
 	/**
 	 * @param id - The ID of the sensor
@@ -15,14 +15,14 @@ public class Pulsometer extends Sensor {
 	 * @param enabled - If the sensor should be enabled
 	 * @param historic - The historical measurements of the sensor
 	 */
-	public Pulsometer(int id, String description, boolean enabled,
+	public GlucoseMeter(int id, String description, boolean enabled,
 	Vector<Measurement> historic)
 	{
 		super(id, description, enabled, historic);
 	}
 
 	@Override
-	public synchronized double measure()
+	public double measure()
 	{
 		if (super.isEnabled())
 		{
@@ -35,7 +35,7 @@ public class Pulsometer extends Sensor {
 			{
 				e.printStackTrace();
 			}
-			return 50 + random.nextInt(100);
+			return 35 + random.nextInt(450);
 		}
 		return 0;
 	}
