@@ -1,4 +1,4 @@
-package com.example.rdo_server.utilities;
+package com.example.rdo_server.network;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

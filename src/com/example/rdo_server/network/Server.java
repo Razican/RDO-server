@@ -1,4 +1,4 @@
-package com.example.rdo_server.utilities;
+package com.example.rdo_server.network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.rdo_server.services.CommService;
+import com.example.rdo_server.utilities.CommandAnalizer;
 
 /**
  * @author Razican (Iban Eguia)

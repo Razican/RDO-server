@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +15,11 @@ import android.location.Location;
 import android.location.LocationManager;
 
 import com.example.rdo_server.MainActivity;
+import com.example.rdo_server.network.Client;
+import com.example.rdo_server.network.Server;
 import com.example.rdo_server.sensors.Measurement;
 import com.example.rdo_server.sensors.Sensor;
-import com.example.rdo_server.utilities.Client;
 import com.example.rdo_server.utilities.CommandAnalizer;
-import com.example.rdo_server.utilities.Server;
 
 /**
  * @author Razican (Iban Eguia)
