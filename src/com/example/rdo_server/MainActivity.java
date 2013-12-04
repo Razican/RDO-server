@@ -185,7 +185,9 @@ public class MainActivity extends Activity {
 	 */
 	public void showUsers()
 	{
-		// TODO change activity
+		final Intent intent = new Intent(MainActivity.this,
+		ListUsersActivity.class);
+		startActivity(intent);
 	}
 
 	/**

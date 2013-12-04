@@ -102,6 +102,17 @@ public class Server {
 	}
 
 	/**
+	 * Get all clients from database
+	 * 
+	 * @return A vector with all clients
+	 */
+	public static Vector<Client> getAllClients()
+	{
+		return null;
+
+	}
+
+	/**
 	 * Closes the server
 	 * 
 	 * @throws IOException - If the socket fails to close

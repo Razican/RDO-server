@@ -1,65 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="left"
     android:layout_margin="@dimen/Margin5"
-    android:gravity="left|center_vertical"
+    android:gravity="center|left"
     android:minHeight="30dp"
     android:orientation="horizontal"
     android:baselineAligned="false" >
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/connectedImage"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginRight="@dimen/Margin20"
-        android:layout_weight="1"
-        android:gravity="center|left"
-        android:paddingRight="@dimen/Margin40" >
+        android:layout_height="wrap_content"
+        android:src="@drawable/coonected_icon"
+        android:layout_marginLeft="@dimen/Margin5"
+        android:layout_marginRight="@dimen/Margin10"
+        android:contentDescription="image"/>
 
-        <ImageView
-            android:id="@+id/connectedImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" 
-            android:contentDescription="image"/>
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/Margin5"
-            android:layout_marginRight="@dimen/Margin10"
-            android:gravity="left|center_vertical"
-            android:height="@dimen/Margin50"
-            android:text=""
-            android:textSize="25sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="left|center_vertical"
-        android:layout_weight="0"
-        android:gravity="left|center_vertical" >
-
-        <TextView
-            android:id="@+id/ip_address"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginRight="@dimen/Margin20"
-            android:gravity="center"
-            android:paddingBottom="@dimen/Margin5"
-            android:paddingLeft="@dimen/Margin5"
-            android:paddingRight="@dimen/Margin5"
-            android:paddingTop="@dimen/Margin5"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000000" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/client_username_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/Margin5"
+        android:layout_marginRight="@dimen/Margin10"
+        android:gravity="left|center_vertical"
+        android:height="@dimen/Margin50"
+        android:text="admin"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp" />
+    
+    <TextView
+        android:id="@+id/client_ip_address_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/Margin5"
+        android:layout_marginRight="@dimen/Margin10"
+        android:gravity="left|center_vertical"
+        android:height="@dimen/Margin50"
+        android:text="127.0.0.1"
+        android:textColor="#888888"
+        android:textSize="20sp" />
 
 </LinearLayout>
