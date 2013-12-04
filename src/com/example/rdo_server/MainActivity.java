@@ -18,6 +18,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.rdo_server.services.CommService;
 import com.example.rdo_server.services.SensorService;
@@ -25,6 +29,7 @@ import com.example.rdo_server.utilities.Database;
 
 /**
  * @author Razican (Iban Eguia)
+ * @author Jordan Aranda Tejada
  */
 public class MainActivity extends Activity {
 
@@ -33,6 +38,11 @@ public class MainActivity extends Activity {
 	 */
 	public static final String	ACTION	= "TAKEPHOTO";
 	private PhotoReceiver		receiver;
+	private TextView			ipAddressTextView;
+	private EditText			editTextPort;
+	private EditText			editTextMaxUsers;
+	private Button				btnUsers;
+	private Button				btnUpdate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,8 +50,34 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// We get a reference to the interface controls
+		ipAddressTextView = (TextView) findViewById(R.id.ip_textview);
+		editTextPort = (EditText) findViewById(R.id.editText_port);
+		editTextMaxUsers = (EditText) findViewById(R.id.editText_max_users);
+		btnUsers = (Button) findViewById(R.id.button_users);
+		btnUsers.setOnClickListener(new View.OnClickListener()
+		{
+
+			@Override
+			public void onClick(final View view)
+			{
+				showUsers();
+			}
+		});
+		btnUpdate = (Button) findViewById(R.id.button_update);
+		btnUpdate.setOnClickListener(new View.OnClickListener()
+		{
+
+			@Override
+			public void onClick(final View view)
+			{
+				update();
+			}
+		});
+
 		startService(new Intent(this, SensorService.class));
 		Log.d("IP", getIP());
+		ipAddressTextView.setText(getIP());
 
 		Database.init(this);
 
@@ -52,6 +88,8 @@ public class MainActivity extends Activity {
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");
 		comIntent.putExtra("port", 1099); // TODO from UI/config
+		editTextPort.setText("1099");
+		editTextMaxUsers.setText("10"); // TODO Get from database
 		startService(comIntent);
 	}
 
@@ -140,5 +178,21 @@ public class MainActivity extends Activity {
 			startActivityForResult(takePictureIntent,
 			intent.getIntExtra("client", - 1) + 1);
 		}
+	}
+
+	/**
+	 * Method pressing the users button
+	 */
+	public void showUsers()
+	{
+		// TODO change activity
+	}
+
+	/**
+	 * Method pressing the update button
+	 */
+	public void update()
+	{
+		// TODO set database data
 	}
 }

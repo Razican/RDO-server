@@ -1,42 +1,114 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentTop="true"
-    android:layout_marginLeft="80dp"
-    android:layout_marginTop="35dp"
     android:orientation="vertical"
+    android:paddingLeft="@dimen/Margin15"
+	android:paddingRight="@dimen/Margin15"
+	android:paddingBottom="@dimen/Margin15"
+	android:paddingTop="@dimen/Margin15"
+	android:layout_gravity="center"
+	android:gravity="center"
+    android:background="@drawable/background"
     tools:context=".MainActivity" >
+        
+    	<TextView
+    	    android:id="@+id/username_titleView"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_gravity="center"
+    	    android:gravity="center"
+    	    android:text="Username"
+    	    android:textColor="#FFFFFF"
+    	    android:textSize="40sp"
+    	    android:textStyle="normal" 
+    	    android:layout_marginBottom="10dp"/>
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Switch" />
+    	<TextView
+    	    android:id="@+id/ip_textview"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:textColor="#F0F0F0"
+    	    android:textSize="15sp"
+    	    android:text="127.0.0.1" />
 
-    <Switch
-        android:id="@+id/switch2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Switch" />
+    	<LinearLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginBottom="10dp"
+    	    android:layout_marginTop="50dp" >
 
-    <Switch
-        android:id="@+id/switch3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Switch" />
+    		<TextView
+    		    android:id="@+id/textView_port"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="fill_parent"
+    		    android:layout_marginRight="10dp"
+    		    android:gravity="center_vertical"
+    		    android:text="Puerto"
+    		    android:textColor="#FFFFFF"
+    		    android:textSize="23sp" />
 
-    <Switch
-        android:id="@+id/switch4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Switch" />
+    		<EditText
+    		    android:id="@+id/editText_port"
+    		    android:layout_width="0dip"
+    		    android:layout_height="wrap_content"
+    		    android:layout_weight="1"
+    		    android:gravity="center_vertical"
+    		    android:ems="10" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+    		    <requestFocus />
+    		</EditText>
+
+    	</LinearLayout>
+
+    	<LinearLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content" >
+
+    		<TextView
+    		    android:id="@+id/textView_max_users"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="fill_parent"
+    		    android:layout_marginRight="10dp"
+    		    android:gravity="center_vertical"
+    		    android:text="Max Usuarios"
+    		    android:textColor="#FFFFFF"
+    		    android:textSize="23sp" />
+
+    		<EditText
+    		    android:id="@+id/editText_max_users"
+    		    android:layout_width="0dip"
+    		    android:layout_height="wrap_content"
+    		    android:layout_weight="1"
+    		    android:gravity="center_vertical"
+    		    android:ems="10" />
+
+    	</LinearLayout>
+
+    	<LinearLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="0dip"
+    	    android:layout_weight="1"
+    	    android:gravity="right"
+    	    android:layout_marginBottom="15dp">
+
+    		<Button
+    		    android:id="@+id/button_users"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="wrap_content"
+    		    android:layout_gravity="bottom"
+    		    android:layout_marginRight="10dp"
+    		    android:textSize="20sp"
+    		    android:text="Usuarios" />
+
+    		<Button
+    		    android:id="@+id/button_update"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="wrap_content"
+    		    android:layout_gravity="bottom"
+    		    android:textSize="20sp"
+    		    android:text="Actualizar"/>
+    	    
+    	</LinearLayout>
     
 </LinearLayout>
