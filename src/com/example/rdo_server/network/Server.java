@@ -85,7 +85,7 @@ public class Server {
 
 					if (line != null)
 					{
-						c.write("318 OK Adiós.");
+						c.write("318 OK Adios.");
 					}
 
 					c.close();
