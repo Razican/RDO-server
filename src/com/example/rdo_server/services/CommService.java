@@ -175,12 +175,12 @@ public class CommService extends IntentService {
 				{
 					if ( ! SensorService.isEnabled(index))
 					{
-						c.write("314 OK Sensor desactivado.");
+						c.write("529 ERR Sensor en estado OFF.");
 					}
 					else
 					{
 						SensorService.disable(index);
-						c.write("313 OK Sensor activo.");
+						c.write("314 OK Sensor desactivado.");
 					}
 				}
 				else
