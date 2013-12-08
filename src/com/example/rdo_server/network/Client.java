@@ -151,6 +151,22 @@ public class Client {
 	}
 
 	/**
+	 * @return The user of the client
+	 */
+	public Object getUser()
+	{
+		return user;
+	}
+
+	/**
+	 * @return The IP of the client
+	 */
+	public String getIP()
+	{
+		return socket.getInetAddress().getHostAddress();
+	}
+
+	/**
 	 * Sets the user for the client
 	 * 
 	 * @param photo - If the photo has been sent
@@ -188,7 +204,7 @@ public class Client {
 		{
 			c += user + " @ ";
 		}
-		c += socket.getInetAddress().getHostAddress();
+		c += getIP();
 		c += " - ID: " + id.substring(0, 7);
 
 		return c;

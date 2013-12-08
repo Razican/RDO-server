@@ -6,10 +6,14 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.rdo_server.services.CommService;
 import com.example.rdo_server.utilities.CommandAnalizer;
+import com.example.rdo_server.utilities.Database;
+import com.example.rdo_server.utilities.User;
 
 /**
  * @author Razican (Iban Eguia)
@@ -102,14 +106,58 @@ public class Server {
 	}
 
 	/**
-	 * Get all clients from database
+	 * Get users
 	 * 
-	 * @return A vector with all clients
+	 * @return A vector with all users
 	 */
-	public static Vector<Client> getAllClients()
+	public Vector<User> getUsers()
 	{
-		return null;
+		Vector<User> v = new Vector<User>();
 
+		SQLiteDatabase db = Database.getInstance().getReadableDatabase();
+
+		Cursor c = db.rawQuery("SELECT * FROM USER", null);
+		c.moveToFirst();
+
+		for (int i = 0; i < c.getCount(); i++)
+		{
+			String username = c.getString(1);
+			boolean online = checkOnline(username);
+			v.add(new User(c.getInt(0), c.getString(1), online,
+			online ? getIp(username) : null));
+
+			c.moveToNext();
+		}
+
+		// TODO not in DB
+
+		return v;
+	}
+
+	private boolean checkOnline(String username)
+	{
+		for (Client c: clients)
+		{
+			if (c.getUser() != null && c.getUser().equals(username))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private String getIp(String username)
+	{
+		for (Client c: clients)
+		{
+			if (c.getUser() != null && c.getUser().equals(username))
+			{
+				return c.getIP();
+			}
+		}
+
+		return null;
 	}
 
 	/**

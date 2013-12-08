@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Vector;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import com.example.rdo_server.network.Server;
 import com.example.rdo_server.sensors.Measurement;
 import com.example.rdo_server.sensors.Sensor;
 import com.example.rdo_server.utilities.CommandAnalizer;
+import com.example.rdo_server.utilities.User;
 
 /**
  * @author Razican (Iban Eguia)
@@ -273,6 +275,20 @@ public class CommService extends IntentService {
 		{
 			c.setPhoto(false);
 		}
+	}
+
+	/**
+	 * Get clients
+	 * 
+	 * @return A vector with all users
+	 */
+	public static Vector<User> getUsers()
+	{
+		if (server != null)
+		{
+			return server.getUsers();
+		}
+		return null;
 	}
 
 	@Override
