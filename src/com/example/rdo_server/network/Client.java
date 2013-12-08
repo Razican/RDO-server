@@ -7,7 +7,11 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.UUID;
 
+import android.database.Cursor;
 import android.util.Log;
+
+import com.example.rdo_server.utilities.Database;
+import com.example.rdo_server.utilities.exceptions.NonExistentUserException;
 
 /**
  * @author Razican (Iban Eguia)
@@ -144,10 +148,30 @@ public class Client {
 	 * Sets the user for the client
 	 * 
 	 * @param user - The user for the client
+	 * @throws NonExistentUserException If the user does not exist
 	 */
-	public void setUser(String user)
+	public void setUser(String user) throws NonExistentUserException
 	{
-		this.user = user;
+		if (existsUser(user))
+		{
+			this.user = user;
+		}
+		else
+		{
+			throw new NonExistentUserException();
+		}
+	}
+
+	private boolean existsUser(String user)
+	{
+		Cursor c = Database
+		.getInstance()
+		.getReadableDatabase()
+		.rawQuery("SELECT COUNT(*) FROM USER WHERE name = \"" + user + "\";",
+		null);
+
+		c.moveToFirst();
+		return c.getInt(0) == 1;
 	}
 
 	/**
@@ -192,8 +216,14 @@ public class Client {
 	 */
 	public boolean checkPassword(String password)
 	{
-		return isAuthenticated = (user != null && user.equals("admin") && password
-		.equals("8cb2237d0679ca88db6464eac60da96345513964")); // pass:12345
+		Cursor c = Database
+		.getInstance()
+		.getReadableDatabase()
+		.rawQuery("SELECT password FROM USER WHERE name = \"" + user + "\"",
+		null);
+		c.moveToFirst();
+
+		return isAuthenticated = password.equals(c.getString(0));
 	}
 
 	@Override

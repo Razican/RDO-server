@@ -19,6 +19,7 @@ import com.example.rdo_server.sensors.Measurement;
 import com.example.rdo_server.sensors.Sensor;
 import com.example.rdo_server.utilities.CommandAnalizer;
 import com.example.rdo_server.utilities.User;
+import com.example.rdo_server.utilities.exceptions.NonExistentUserException;
 
 /**
  * @author Razican (Iban Eguia)
@@ -45,19 +46,27 @@ public class CommService extends IntentService {
 			String user = CommandAnalizer.getParameter(l);
 			if (user != null)
 			{
-				c.setUser(user);
-				c.write("301 OK Bienvenido " + user + ".");
+				try
+				{
+					c.setUser(user);
+					c.write("301 OK Bienvenido " + user + ".");
+				}
+				catch (NonExistentUserException e)
+				{
+					c.write("504 ERR El usuario no existe");
+				}
 			}
 			else
 			{
 				c.write("501 ERR Falta el nombre de usuario.");
 			}
 		}
-		else if (command.equals("CLAVE"))
+		else if (command.equals("CLAVE") && c.getUser() != null)
 		{
 			String password = CommandAnalizer.getParameter(l);
 
-			if (password != null)
+			if (password != null
+			&& ! password.equals("da39a3ee5e6b4b0d3255bfef95601890afd80709"))
 			{
 				if (c.checkPassword(password))
 				{
