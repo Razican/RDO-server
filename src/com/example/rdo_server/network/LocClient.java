@@ -15,7 +15,6 @@ import android.util.Log;
  */
 public class LocClient {
 
-	private static boolean		transmitting	= false;
 	private Socket				socket;
 	private DataOutputStream	output;
 	private BufferedReader		input;
@@ -55,11 +54,6 @@ public class LocClient {
 	 */
 	public void authenticate()
 	{
-		while (transmitting)
-		{
-			;
-		}
-		transmitting = true;
 		try
 		{
 			output.writeBytes("USER " + username + "\n");
@@ -81,7 +75,6 @@ public class LocClient {
 		{
 			e.printStackTrace();
 		}
-		transmitting = false;
 	}
 
 	/**
@@ -89,11 +82,6 @@ public class LocClient {
 	 */
 	public synchronized void close()
 	{
-		while (transmitting)
-		{
-			;
-		}
-		transmitting = true;
 		try
 		{
 			output.writeBytes("SALIR\n");
@@ -110,7 +98,6 @@ public class LocClient {
 		{
 			e.printStackTrace();
 		}
-		transmitting = false;
 	}
 
 	/**
@@ -121,12 +108,6 @@ public class LocClient {
 	 */
 	public synchronized Location getLocation(int cell)
 	{
-		while (transmitting)
-		{
-			;
-		}
-		transmitting = true;
-
 		Location loc = null;
 		try
 		{
@@ -147,7 +128,7 @@ public class LocClient {
 		{
 			e.printStackTrace();
 		}
-		transmitting = false;
+
 		return loc;
 	}
 
