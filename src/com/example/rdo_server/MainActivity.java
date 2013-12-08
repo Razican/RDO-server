@@ -78,6 +78,8 @@ public class MainActivity extends Activity {
 		startService(new Intent(this, SensorService.class));
 		Log.d("IP", getIP());
 		ipAddressTextView.setText(getIP());
+		editTextPort.setText("1099");
+		editTextMaxUsers.setText("10"); // TODO Get from database
 
 		Database.init(this);
 
@@ -88,8 +90,7 @@ public class MainActivity extends Activity {
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");
 		comIntent.putExtra("port", 1099); // TODO from UI/config
-		editTextPort.setText("1099");
-		editTextMaxUsers.setText("10"); // TODO Get from database
+		comIntent.putExtra("maxConn", 10); // TODO from UI/config
 		startService(comIntent);
 	}
 

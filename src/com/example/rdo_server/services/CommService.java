@@ -308,17 +308,27 @@ public class CommService extends IntentService {
 		if (action != null && action.equals("init"))
 		{
 			int port = intent.getIntExtra("port", 0);
+			int maxConn = intent.getIntExtra("maxConn", 0);
 
-			if (port != 0)
+			if (port != 0 && maxConn != 0)
 			{
 				try
 				{
-					server = new Server(port, this);
+					server = new Server(port, maxConn, this);
 				}
 				catch (IOException e)
 				{
 					e.printStackTrace();
 				}
+			}
+		}
+		else if (action != null && action.equals("update"))
+		{
+			int maxConn = intent.getIntExtra("maxConn", 0);
+
+			if (maxConn != 0)
+			{
+				server.setMaxConn(maxConn);
 			}
 		}
 		else if (action != null && action.equals("command"))

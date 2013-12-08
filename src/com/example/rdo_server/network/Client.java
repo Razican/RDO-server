@@ -99,12 +99,11 @@ public class Client {
 			{
 				Log.d("PHOTO", "Sending photo of length " + byteArray.length
 				+ " to client " + this);
+
 				socket.getOutputStream().write(byteArray);
 				socket.getOutputStream().flush();
-				Log.d("PHOTO", "Photo sent");
 
-				Log.d("PHOTO", "Last bytes: " + byteArray[byteArray.length - 2]
-				+ " " + byteArray[byteArray.length - 2]);
+				Log.d("PHOTO", "Photo sent");
 			}
 			catch (IOException e)
 			{

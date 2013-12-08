@@ -23,15 +23,18 @@ public class Server {
 	private ServerSocket	server;
 	private CommService		service;
 	private Vector<Client>	clients;
+	private int				maxConnections;
 
 	/**
 	 * Creates an instance for the server.
 	 * 
 	 * @param port - The port for the server
+	 * @param maxConnections - The maximum number of connections
 	 * @param service - The communication service launching the server
 	 * @throws IOException - If there is an exception when creating the socket
 	 */
-	public Server(int port, CommService service) throws IOException
+	public Server(int port, int maxConnections, CommService service)
+	throws IOException
 	{
 		this.server = new ServerSocket(port);
 		this.service = service;
@@ -64,6 +67,10 @@ public class Server {
 			{
 				try
 				{
+					while ( ! canAcceptMore())
+					{
+						;
+					}
 					Client c = new Client(server.accept());
 					clients.add(c);
 
@@ -106,6 +113,24 @@ public class Server {
 	}
 
 	/**
+	 * @return If the server can accept more connections
+	 */
+	protected boolean canAcceptMore()
+	{
+		return maxConnections > clients.size();
+	}
+
+	/**
+	 * Sets the maximum number of connections
+	 * 
+	 * @param maxConn - The new number of maximum connections
+	 */
+	public void setMaxConn(int maxConn)
+	{
+		maxConnections = maxConn;
+	}
+
+	/**
 	 * Get users
 	 * 
 	 * @return A vector with all users
@@ -123,13 +148,20 @@ public class Server {
 		{
 			String username = c.getString(1);
 			boolean online = checkOnline(username);
+
 			v.add(new User(c.getInt(0), c.getString(1), online,
 			online ? getIp(username) : null));
 
 			c.moveToNext();
 		}
 
-		// TODO not in DB
+		for (Client cl: clients)
+		{
+			if (cl.getUser() == null)
+			{
+				v.add(new User(0, null, true, cl.getIP()));
+			}
+		}
 
 		return v;
 	}
