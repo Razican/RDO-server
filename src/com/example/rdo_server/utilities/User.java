@@ -1,14 +1,17 @@
 package com.example.rdo_server.utilities;
 
+import java.io.Serializable;
+
 /**
  * @author Razican (Iban Eguia)
  */
-public class User {
+public class User implements Serializable {
 
-	private int		id;
-	private String	name;
-	private boolean	online;
-	private String	ip;
+	private static final long	serialVersionUID	= - 1777649328461019186L;
+	private int					id;
+	private String				name;
+	private boolean				online;
+	private String				ip;
 
 	/**
 	 * Creates a user

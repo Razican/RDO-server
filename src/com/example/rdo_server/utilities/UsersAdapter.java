@@ -3,6 +3,7 @@ package com.example.rdo_server.utilities;
 import java.util.Vector;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class UsersAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(final int position)
 	{
-		return 0;
+		return users.get(position).getId();
 	}
 
 	@Override
@@ -68,6 +69,7 @@ public class UsersAdapter extends BaseAdapter {
 		final TextView ipClient = (TextView) v
 		.findViewById(R.id.client_ip_address_list);
 		ipClient.setText(users.get(position).getIp());
+		Log.e("USER_IP", users.get(position).getIp());
 
 		final ImageView iVUser = (ImageView) v
 		.findViewById(R.id.connectedImage);

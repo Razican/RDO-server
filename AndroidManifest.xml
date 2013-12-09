@@ -34,7 +34,12 @@
         </activity>
         <activity
             android:name="com.example.rdo_server.ListUsersActivity"
-            android:label="@string/title_activity_list_users" >
+            android:label="@string/title_activity_list_users"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.example.rdo_server.UserDataActivity"
+            android:label="@string/title_activity_user_data" >
         </activity>
     </application>
 
