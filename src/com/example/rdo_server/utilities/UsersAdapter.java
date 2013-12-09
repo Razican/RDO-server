@@ -10,42 +10,41 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.rdo_server.R;
-import com.example.rdo_server.network.Client;
 
 /**
  * @author Jordan Aranda Tejada
  */
-public class ClientsAdapter extends BaseAdapter {
+public class UsersAdapter extends BaseAdapter {
 
-	private final Context			context;
-	private final Vector<Client>	clients;
+	private final Context		context;
+	private final Vector<User>	users;
 
 	/**
 	 * @param context The context of list.
 	 * @param users The vector with all users
 	 */
-	public ClientsAdapter(final Context context, final Vector<Client> clients)
+	public UsersAdapter(final Context context, final Vector<User> users)
 	{
 		this.context = context;
-		this.clients = clients;
+		this.users = users;
 	}
 
 	@Override
 	public int getCount()
 	{
-		return clients.size();
+		return users.size();
 	}
 
 	@Override
 	public Object getItem(final int arg0)
 	{
-		return clients.get(arg0);
+		return users.get(arg0);
 	}
 
 	@Override
 	public long getItemId(final int position)
 	{
-		return 0; // TODO client.get(position).getId();
+		return 0;
 	}
 
 	@Override
@@ -61,15 +60,13 @@ public class ClientsAdapter extends BaseAdapter {
 			v = inf.inflate(R.layout.client_row, null);
 		}
 
-		// CLIENT USERNAME
 		final TextView username = (TextView) v
 		.findViewById(R.id.client_username_list);
-		username.setText("Admin"); // TODO get client username from database
+		username.setText(users.get(position).getName());
 
-		// CLIENT IP
 		final TextView ipClient = (TextView) v
 		.findViewById(R.id.client_ip_address_list);
-		ipClient.setText("127.0.0.1");
+		ipClient.setText(users.get(position).getIp());
 
 		return v;
 	}
