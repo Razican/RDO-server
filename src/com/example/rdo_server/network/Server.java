@@ -36,6 +36,7 @@ public class Server {
 	public Server(int port, int maxConnections, CommService service)
 	throws IOException
 	{
+		this.maxConnections = maxConnections;
 		this.server = new ServerSocket(port);
 		this.service = service;
 		this.clients = new Vector<Client>();

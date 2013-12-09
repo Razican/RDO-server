@@ -59,8 +59,8 @@ public class SensorService {
 			loc.setLatitude(m.getDouble(2));
 			loc.setLongitude(m.getDouble(3));
 
-			measurements.add(new Measurement(new Date(m.getInt(0) * 1000), loc,
-			m.getDouble(4)));
+			measurements.add(new Measurement(new Date(
+			((long) m.getInt(0)) * 1000), loc, m.getDouble(4)));
 			m.moveToNext();
 		}
 
