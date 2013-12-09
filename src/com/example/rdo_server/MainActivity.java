@@ -197,10 +197,16 @@ public class MainActivity extends Activity {
 		LocationService.setLocServPort(Integer.parseInt(editTextServerLocPort
 		.getText().toString()));
 
+		int maxConn = Integer.parseInt(editTextMaxUsers.getText().toString());
+
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "update");
-		comIntent.putExtra("maxConn",
-		Integer.parseInt(editTextMaxUsers.getText().toString()));
+		comIntent.putExtra("maxConn", maxConn);
 		startService(comIntent);
+
+		Log.d("Config", "Max. users: " + maxConn);
+		Log.d("Config", "Loc. server: "
+		+ editTextServerLocIp.getText().toString() + ":"
+		+ editTextServerLocPort.getText().toString());
 	}
 }
