@@ -68,7 +68,7 @@ public class ListUsersActivity extends Activity {
 		});
 
 		usersConnectedTextView.setText("Usuarios conectados: "
-		+ CommService.onlineUsers() + "/" + 10);
+		+ CommService.onlineUsers() + "/" + CommService.getMaxUsers());
 	}
 
 	@Override

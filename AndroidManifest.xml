@@ -41,6 +41,10 @@
             android:name="com.example.rdo_server.UserDataActivity"
             android:label="@string/title_activity_user_data" >
         </activity>
+        <activity
+            android:name="com.example.rdo_server.NewUserActivity"
+            android:label="@string/title_activity_new_user" >
+        </activity>
     </application>
 
 </manifest>

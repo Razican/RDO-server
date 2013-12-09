@@ -68,8 +68,15 @@ public class UsersAdapter extends BaseAdapter {
 
 		final TextView ipClient = (TextView) v
 		.findViewById(R.id.client_ip_address_list);
-		ipClient.setText(users.get(position).getIp());
-		Log.e("USER_IP", users.get(position).getIp());
+		if (users.get(position).getIp() == null)
+		{
+			ipClient.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			ipClient.setText(users.get(position).getIp());
+			Log.d("USER_IP", users.get(position).getIp());
+		}
 
 		final ImageView iVUser = (ImageView) v
 		.findViewById(R.id.connectedImage);
