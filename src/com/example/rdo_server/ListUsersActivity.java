@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class ListUsersActivity extends Activity {
 
 	private ListView	list;
 	private TextView	usersConnectedTextView;
+	private Button		btnAddUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -43,19 +45,30 @@ public class ListUsersActivity extends Activity {
 
 			@Override
 			public void onItemClick(final AdapterView<?> arg0, final View view,
-			final int pos, final long arg3)
+			final int pos, final long arg)
 			{
 				final Intent intent = new Intent(ListUsersActivity.this,
 				UserDataActivity.class);
-				// final Bundle b = new Bundle();
-				// b.putInt("client_id", clients.get(pos).getId());
-				// intent.putExtras(b);
-				// startActivity(intent);
+				final Bundle b = new Bundle();
+				b.putSerializable("user", users.get(pos));
+				intent.putExtras(b);
+				startActivity(intent);
 			}
 		});
 
-		// TODO Set connected users
-		usersConnectedTextView.setText("Usuarios conectados: 8");
+		btnAddUser = (Button) findViewById(R.id.button_add);
+		btnAddUser.setOnClickListener(new View.OnClickListener()
+		{
+
+			@Override
+			public void onClick(final View view)
+			{
+
+			}
+		});
+
+		usersConnectedTextView.setText("Usuarios conectados: "
+		+ CommService.onlineUsers() + "/" + 10);
 	}
 
 	@Override
