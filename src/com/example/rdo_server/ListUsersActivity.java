@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +24,7 @@ public class ListUsersActivity extends Activity {
 
 	private ListView	list;
 	private TextView	usersConnectedTextView;
-	private Button		btnAddUser;
+	private ImageButton	btnAddUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -56,7 +56,7 @@ public class ListUsersActivity extends Activity {
 			}
 		});
 
-		btnAddUser = (Button) findViewById(R.id.button_add);
+		btnAddUser = (ImageButton) findViewById(R.id.button_add);
 		btnAddUser.setOnClickListener(new View.OnClickListener()
 		{
 

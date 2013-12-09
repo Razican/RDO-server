@@ -60,4 +60,14 @@ public class User implements Serializable {
 	{
 		return ip;
 	}
+
+	/**
+	 * Changes the name of the user
+	 * 
+	 * @param name - The new name for the user
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 }

@@ -1,12 +1,15 @@
 package com.example.rdo_server;
 
+import razican.utils.StringUtils;
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.rdo_server.utilities.Database;
 import com.example.rdo_server.utilities.User;
 
 /**
@@ -57,12 +60,39 @@ public class UserDataActivity extends Activity {
 
 	private void delete()
 	{
-		// TODO
+		SQLiteDatabase db = Database.getInstance().getWritableDatabase();
+
+		db.rawQuery("DELETE FROM USER WHERE id = " + user.getId() + ";", null);
+
+		// TODO diálogo
+
+		finish();
 	}
 
 	private void save()
 	{
-		// TODO
+		if (usernameEditText.getText().toString().equals(""))
+		{
+			// TODO dialog
+		}
+		else
+		{
+			user.setName(usernameEditText.getText().toString());
+		}
+
+		SQLiteDatabase db = Database.getInstance().getWritableDatabase();
+
+		db.rawQuery("UPDATE USER SET name = \"" + user.getName()
+		+ "\" WHERE id = " + user.getId() + ";", null);
+
+		if ( ! passwordEditText.getText().toString().equals(""))
+		{
+			String pass = StringUtils.sha1(passwordEditText.getText()
+			.toString());
+
+			db.rawQuery("UPDATE USER SET password = \"" + pass
+			+ "\" WHERE id = " + user.getId() + ";", null);
+		}
 	}
 
 	@Override
