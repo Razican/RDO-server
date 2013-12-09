@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.rdo_server.R;
@@ -67,6 +68,14 @@ public class UsersAdapter extends BaseAdapter {
 		final TextView ipClient = (TextView) v
 		.findViewById(R.id.client_ip_address_list);
 		ipClient.setText(users.get(position).getIp());
+
+		final ImageView iVUser = (ImageView) v
+		.findViewById(R.id.connectedImage);
+		iVUser.setImageResource(R.drawable.disconnected_icon);
+		if (users.get(position).isOnline())
+		{
+			iVUser.setImageResource(R.drawable.coonected_icon);
+		}
 
 		return v;
 	}
