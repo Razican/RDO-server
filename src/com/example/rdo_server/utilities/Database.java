@@ -33,6 +33,10 @@ public class Database extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE CONFIG ("
 		+ "\"key\" TEXT PRIMARY KEY NOT NULL, \"value\" TEXT);");
 
+		db.execSQL("CREATE TABLE USER ("
+		+ "\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+		+ "\"name\" TEXT UNIQUE NOT NULL, \"password\" TEXT NOT NULL);");
+
 		db.execSQL("CREATE TABLE SENSOR ("
 		+ "\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 		+ "\"description\" TEXT,"
@@ -50,6 +54,11 @@ public class Database extends SQLiteOpenHelper {
 	{
 		db
 		.execSQL("INSERT INTO CONFIG VALUES (\"patient_id\", \"Paciente 1\");");
+
+		db.execSQL("INSERT INTO USER (\"name\", \"password\") VALUES "
+		+ "(\"Razican\", \"8cb2237d0679ca88db6464eac60da96345513964\")," + // 12345
+		"(\"Jordan\", \"d5f12e53a182c062b6bf30c1445153faff12269a\");"); // 4321
+
 		db
 		.execSQL("INSERT INTO SENSOR (\"description\", \"enabled\") VALUES "
 		+ "(\"Pulsometro\", 1), (\"Termometro\", 1),(\"Medidor de respiracion\", 1),(\"Medidor de glucosa\", 1);");

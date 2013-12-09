@@ -94,6 +94,8 @@ public class MainActivity extends Activity {
 
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");
+		comIntent.putExtra("port", 1099); // TODO from UI/config
+		comIntent.putExtra("maxConn", 10); // TODO from UI/config
 		startService(comIntent);
 	}
 

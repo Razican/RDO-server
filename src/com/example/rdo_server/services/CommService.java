@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Vector;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import com.example.rdo_server.network.Server;
 import com.example.rdo_server.sensors.Measurement;
 import com.example.rdo_server.sensors.Sensor;
 import com.example.rdo_server.utilities.CommandAnalizer;
+import com.example.rdo_server.utilities.User;
+import com.example.rdo_server.utilities.exceptions.NonExistentUserException;
 
 /**
  * @author Razican (Iban Eguia)
@@ -43,19 +46,27 @@ public class CommService extends IntentService {
 			String user = CommandAnalizer.getParameter(l);
 			if (user != null)
 			{
-				c.setUser(user);
-				c.write("301 OK Bienvenido " + user + ".");
+				try
+				{
+					c.setUser(user);
+					c.write("301 OK Bienvenido " + user + ".");
+				}
+				catch (NonExistentUserException e)
+				{
+					c.write("504 ERR El usuario no existe");
+				}
 			}
 			else
 			{
 				c.write("501 ERR Falta el nombre de usuario.");
 			}
 		}
-		else if (command.equals("CLAVE"))
+		else if (command.equals("CLAVE") && c.getUser() != null)
 		{
 			String password = CommandAnalizer.getParameter(l);
 
-			if (password != null)
+			if (password != null
+			&& ! password.equals("da39a3ee5e6b4b0d3255bfef95601890afd80709"))
 			{
 				if (c.checkPassword(password))
 				{
@@ -164,12 +175,12 @@ public class CommService extends IntentService {
 				{
 					if ( ! SensorService.isEnabled(index))
 					{
-						c.write("314 OK Sensor desactivado.");
+						c.write("529 ERR Sensor en estado OFF.");
 					}
 					else
 					{
 						SensorService.disable(index);
-						c.write("313 OK Sensor activo.");
+						c.write("314 OK Sensor desactivado.");
 					}
 				}
 				else
@@ -275,6 +286,20 @@ public class CommService extends IntentService {
 		}
 	}
 
+	/**
+	 * Get clients
+	 * 
+	 * @return A vector with all users
+	 */
+	public static Vector<User> getUsers()
+	{
+		if (server != null)
+		{
+			return server.getUsers();
+		}
+		return null;
+	}
+
 	@Override
 	protected void onHandleIntent(Intent intent)
 	{
@@ -283,17 +308,27 @@ public class CommService extends IntentService {
 		if (action != null && action.equals("init"))
 		{
 			int port = intent.getIntExtra("port", 0);
+			int maxConn = intent.getIntExtra("maxConn", 0);
 
-			if (port != 0)
+			if (port != 0 && maxConn != 0)
 			{
 				try
 				{
-					server = new Server(port, this);
+					server = new Server(port, maxConn, this);
 				}
 				catch (IOException e)
 				{
 					e.printStackTrace();
 				}
+			}
+		}
+		else if (action != null && action.equals("update"))
+		{
+			int maxConn = intent.getIntExtra("maxConn", 0);
+
+			if (maxConn != 0)
+			{
+				server.setMaxConn(maxConn);
 			}
 		}
 		else if (action != null && action.equals("command"))
