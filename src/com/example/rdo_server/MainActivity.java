@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
 	 * The action for the receiver
 	 */
 	public static final String	ACTION	= "TAKEPHOTO";
-	private PhotoReceiver		receiver;
 	private TextView			ipAddressTextView;
 	private EditText			editTextServerLocIp;
 	private EditText			editTextServerLocPort;
@@ -90,12 +89,12 @@ public class MainActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter(ACTION);
 		filter.addCategory(Intent.CATEGORY_DEFAULT);
-		registerReceiver(receiver = new PhotoReceiver(), filter);
+		registerReceiver(new PhotoReceiver(), filter);
 
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");
-		comIntent.putExtra("port", 1099); // TODO from UI/config
-		comIntent.putExtra("maxConn", 10); // TODO from UI/config
+		comIntent.putExtra("port", 1099);
+		comIntent.putExtra("maxConn", 10);
 		startService(comIntent);
 	}
 
@@ -139,13 +138,6 @@ public class MainActivity extends Activity {
 		}
 		return null;
 	}
-
-	// @Override
-	// protected void onStop()
-	// {
-	// unregisterReceiver(receiver);
-	// super.onStop();
-	// }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -204,5 +196,11 @@ public class MainActivity extends Activity {
 		LocationService.setLocServIP(editTextServerLocIp.getText().toString());
 		LocationService.setLocServPort(Integer.parseInt(editTextServerLocPort
 		.getText().toString()));
+
+		Intent comIntent = new Intent(this, CommService.class);
+		comIntent.putExtra("action", "update");
+		comIntent.putExtra("maxConn",
+		Integer.parseInt(editTextMaxUsers.getText().toString()));
+		startService(comIntent);
 	}
 }
