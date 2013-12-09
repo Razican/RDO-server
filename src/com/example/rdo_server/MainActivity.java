@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.rdo_server.services.CommService;
+import com.example.rdo_server.services.LocationService;
 import com.example.rdo_server.services.SensorService;
 import com.example.rdo_server.utilities.Database;
 
@@ -39,7 +40,8 @@ public class MainActivity extends Activity {
 	public static final String	ACTION	= "TAKEPHOTO";
 	private PhotoReceiver		receiver;
 	private TextView			ipAddressTextView;
-	private EditText			editTextPort;
+	private EditText			editTextServerLocIp;
+	private EditText			editTextServerLocPort;
 	private EditText			editTextMaxUsers;
 	private Button				btnUsers;
 	private Button				btnUpdate;
@@ -52,7 +54,8 @@ public class MainActivity extends Activity {
 
 		// We get a reference to the interface controls
 		ipAddressTextView = (TextView) findViewById(R.id.ip_textview);
-		editTextPort = (EditText) findViewById(R.id.editText_port);
+		editTextServerLocIp = (EditText) findViewById(R.id.editText_server_loc_ip);
+		editTextServerLocPort = (EditText) findViewById(R.id.editText_server_loc_port);
 		editTextMaxUsers = (EditText) findViewById(R.id.editText_max_users);
 		btnUsers = (Button) findViewById(R.id.button_users);
 		btnUsers.setOnClickListener(new View.OnClickListener()
@@ -81,15 +84,16 @@ public class MainActivity extends Activity {
 
 		Database.init(this);
 
+		editTextServerLocIp.setText("192.168.1.10");
+		editTextServerLocPort.setText("1100");
+		editTextMaxUsers.setText("10");
+
 		IntentFilter filter = new IntentFilter(ACTION);
 		filter.addCategory(Intent.CATEGORY_DEFAULT);
 		registerReceiver(receiver = new PhotoReceiver(), filter);
 
 		Intent comIntent = new Intent(this, CommService.class);
 		comIntent.putExtra("action", "init");
-		comIntent.putExtra("port", 1099); // TODO from UI/config
-		editTextPort.setText("1099");
-		editTextMaxUsers.setText("10"); // TODO Get from database
 		startService(comIntent);
 	}
 
@@ -195,6 +199,8 @@ public class MainActivity extends Activity {
 	 */
 	public void update()
 	{
-		// TODO set database data
+		LocationService.setLocServIP(editTextServerLocIp.getText().toString());
+		LocationService.setLocServPort(Integer.parseInt(editTextServerLocPort
+		.getText().toString()));
 	}
 }

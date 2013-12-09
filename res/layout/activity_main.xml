@@ -32,14 +32,51 @@
     	    android:textSize="15sp"
     	    android:text="127.0.0.1" />
 
+    	<TextView
+    	    android:id="@+id/textView1"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginTop="50dp"
+    	    android:text="Servidor de localización" 
+    	    android:gravity="center_vertical"
+    		android:textColor="#FFFFFF"
+    		android:textSize="23sp" />
+
     	<LinearLayout
     	    android:layout_width="match_parent"
     	    android:layout_height="wrap_content"
-    	    android:layout_marginBottom="10dp"
-    	    android:layout_marginTop="50dp" >
+    	    android:layout_marginTop="10dp">
 
     		<TextView
-    		    android:id="@+id/textView_port"
+    		    android:id="@+id/textView_loc_server_ip"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="fill_parent"
+    		    android:layout_marginRight="10dp"
+    		    android:gravity="center_vertical"
+    		    android:text="IP"
+    		    android:textColor="#FFFFFF"
+    		    android:textSize="23sp" />
+
+    		<EditText
+    		    android:id="@+id/editText_server_loc_ip"
+    		    android:layout_width="0dip"
+    		    android:layout_height="wrap_content"
+    		    android:layout_weight="1"
+    		    android:ems="10"
+    		    android:gravity="center_vertical" >
+
+    		    <requestFocus />
+    		</EditText>
+
+    	</LinearLayout>
+
+    	<LinearLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginTop="10dp">
+
+    		<TextView
+    		    android:id="@+id/textView_server_loc_port"
     		    android:layout_width="wrap_content"
     		    android:layout_height="fill_parent"
     		    android:layout_marginRight="10dp"
@@ -49,21 +86,19 @@
     		    android:textSize="23sp" />
 
     		<EditText
-    		    android:id="@+id/editText_port"
+    		    android:id="@+id/editText_server_loc_port"
     		    android:layout_width="0dip"
     		    android:layout_height="wrap_content"
     		    android:layout_weight="1"
-    		    android:gravity="center_vertical"
-    		    android:ems="10" >
-
-    		    <requestFocus />
-    		</EditText>
+    		    android:ems="10"
+    		    android:gravity="center_vertical" />
 
     	</LinearLayout>
 
     	<LinearLayout
     	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content" >
+    	    android:layout_height="wrap_content" 
+    	    android:layout_marginTop="20dp">
 
     		<TextView
     		    android:id="@+id/textView_max_users"
@@ -77,10 +112,9 @@
 
     		<EditText
     		    android:id="@+id/editText_max_users"
-    		    android:layout_width="0dip"
+    		    android:layout_width="wrap_content"
     		    android:layout_height="wrap_content"
     		    android:layout_weight="1"
-    		    android:gravity="center_vertical"
     		    android:ems="10" />
 
     	</LinearLayout>
