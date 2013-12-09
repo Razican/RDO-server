@@ -218,4 +218,12 @@ public class Server {
 
 		server.close();
 	}
+
+	/**
+	 * @return The number of online users
+	 */
+	public int onlineUsers()
+	{
+		return clients.size();
+	}
 }

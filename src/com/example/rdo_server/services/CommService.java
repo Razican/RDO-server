@@ -300,6 +300,14 @@ public class CommService extends IntentService {
 		return null;
 	}
 
+	/**
+	 * @return The number of online users
+	 */
+	public static int onlineUsers()
+	{
+		return server != null ? server.onlineUsers() : 0;
+	}
+
 	@Override
 	protected void onHandleIntent(Intent intent)
 	{
