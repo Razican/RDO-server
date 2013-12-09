@@ -9,21 +9,21 @@
 	android:paddingTop="@dimen/Margin15"
 	android:layout_gravity="center"
 	android:gravity="center"
-    tools:context=".UserDataActivity" >
+    tools:context=".NewUserActivity" >
 
    <TextView
-    android:id="@+id/username_titleView"
+    android:id="@+id/new_user_titleView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
-    android:text="Username"
+    android:text="Nuevo usuario"
     android:textColor="#FFFFFF"
     android:textSize="40sp"
     android:textStyle="normal" 
     android:layout_marginBottom="20dp"/>
-
-   <LinearLayout
+   
+    <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_marginTop="10dp">
@@ -85,16 +85,7 @@
     	    android:layout_marginBottom="15dp">
 
     		<Button
-    		    android:id="@+id/button_delete"
-    		    android:layout_width="wrap_content"
-    		    android:layout_height="wrap_content"
-    		    android:layout_gravity="bottom"
-    		    android:layout_marginRight="10dp"
-    		    android:textSize="20sp"
-    		    android:text="Eliminar" />
-
-    		<Button
-    		    android:id="@+id/button_save"
+    		    android:id="@+id/button_save_new_user"
     		    android:layout_width="wrap_content"
     		    android:layout_height="wrap_content"
     		    android:layout_gravity="bottom"
