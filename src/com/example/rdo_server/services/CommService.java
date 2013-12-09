@@ -308,6 +308,14 @@ public class CommService extends IntentService {
 		return server != null ? server.onlineUsers() : 0;
 	}
 
+	/**
+	 * @return The maximum number of users
+	 */
+	public static int getMaxUsers()
+	{
+		return server.getMaxConnections();
+	}
+
 	@Override
 	protected void onHandleIntent(Intent intent)
 	{

@@ -194,6 +194,22 @@ public class Server {
 	}
 
 	/**
+	 * @return The number of online users
+	 */
+	public int onlineUsers()
+	{
+		return clients.size();
+	}
+
+	/**
+	 * @return The maximum number of connections
+	 */
+	public int getMaxConnections()
+	{
+		return maxConnections;
+	}
+
+	/**
 	 * Closes the server
 	 * 
 	 * @throws IOException - If the socket fails to close
@@ -217,13 +233,5 @@ public class Server {
 		}
 
 		server.close();
-	}
-
-	/**
-	 * @return The number of online users
-	 */
-	public int onlineUsers()
-	{
-		return clients.size();
 	}
 }
